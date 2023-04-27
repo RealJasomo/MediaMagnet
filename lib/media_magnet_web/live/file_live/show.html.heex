@@ -15,7 +15,7 @@
 </.list>
 <%= if @file.type == :video do %>
   <video controls>
-    <source src={@file.path} />
+    <source src={"/video/#{@file.id}/stream"} />
   </video>
 <% end %>
 
