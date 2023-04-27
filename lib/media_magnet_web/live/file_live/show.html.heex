@@ -1,0 +1,33 @@
+<.header>
+  File <%= @file.id %>
+  <:subtitle>This is a file record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/files/#{@file}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit file</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @file.name %></:item>
+  <:item title="Path"><%= @file.path %></:item>
+  <:item title="Type"><%= @file.type %></:item>
+</.list>
+<%= if @file.type == :video do %>
+  <video controls>
+    <source src={@file.path} />
+  </video>
+<% end %>
+
+<.back navigate={~p"/files"}>Back to files</.back>
+
+<.modal :if={@live_action == :edit} id="file-modal" show on_cancel={JS.patch(~p"/files/#{@file}")}>
+  <.live_component
+    module={MediaMagnetWeb.FileLive.FormComponent}
+    id={@file.id}
+    title={@page_title}
+    action={@live_action}
+    file={@file}
+    patch={~p"/files/#{@file}"}
+  />
+</.modal>

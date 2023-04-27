@@ -1,0 +1,43 @@
+<.header>
+  Listing Files
+  <:actions>
+    <.link patch={~p"/files/new"}>
+      <.button>New File</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="files"
+  rows={@streams.files}
+  row_click={fn {_id, file} -> JS.navigate(~p"/files/#{file}") end}
+>
+  <:col :let={{_id, file}} label="Name"><%= file.name %></:col>
+  <:col :let={{_id, file}} label="Path"><%= file.path %></:col>
+  <:col :let={{_id, file}} label="Type"><%= file.type %></:col>
+  <:action :let={{_id, file}}>
+    <div class="sr-only">
+      <.link navigate={~p"/files/#{file}"}>Show</.link>
+    </div>
+    <.link patch={~p"/files/#{file}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, file}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: file.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="file-modal" show on_cancel={JS.patch(~p"/files")}>
+  <.live_component
+    module={MediaMagnetWeb.FileLive.FormComponent}
+    id={@file.id || :new}
+    title={@page_title}
+    action={@live_action}
+    file={@file}
+    patch={~p"/files"}
+  />
+</.modal>
