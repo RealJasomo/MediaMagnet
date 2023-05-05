@@ -40,7 +40,9 @@ defmodule MediaMagnet.MixProject do
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.18.16"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:phoenix_inline_svg, "~> 1.4"},
+      {:phoenix_view, "~> 2.0"},
+      {:floki, ">= 0.24.0"},
       {:phoenix_live_dashboard, "~> 0.7.2"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
@@ -52,13 +54,15 @@ defmodule MediaMagnet.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       # core services of membrane
+      {:membrane_rtc_engine, "~> 0.7.0"},
+      {:membrane_webrtc_plugin, "~> 0.9.0"}
       # {:membrane_core, "~> 0.11.0"},
       # {:membrane_mp4_plugin, "> 0.0.0"},
       # {:membrane_http_adaptive_stream_plugin, "> 0.0.0"},
-      # {:membrane_file_plugin, "~> 0.8.0"},
+      # {:membrane_file_plugin, "~> 0.13.0"},
       # {:membrane_h264_ffmpeg_plugin, "~> 0.25.4"},
-      # {:membrane_aac_plugin, "~> 0.11.0"},
-      {:membrane_rtc_engine, "~> 0.11.0"},
+      # {:membrane_aac_plugin, "~> 0.13.0"},
+      # {:membrane_rtc_engine, "~> 0.11.0"}
       # {:membrane_webrtc_plugin, "~> 0.14.0"}
     ]
   end

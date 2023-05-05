@@ -104,6 +104,20 @@ defmodule MediaMagnetWeb do
     end
   end
 
+  def view do
+    quote do
+      use Phoenix.View,
+        root: "lib/media_magnet_web/templates",
+        pattern: "**/*",
+        namespace: MediaMagnetWeb
+
+      alias MediaMagnetWeb.Router.Helpers, as: Routes
+      use PhoenixInlineSvg.Helpers
+
+      use Phoenix.HTML
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """

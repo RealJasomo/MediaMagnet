@@ -1,4 +1,4 @@
-defmodule Videoroom.Room do
+defmodule MediaMagnet.Room do
   @moduledoc false
 
   use GenServer

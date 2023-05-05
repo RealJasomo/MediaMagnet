@@ -1,7 +1,6 @@
 defmodule MediaMagnetWeb.Router do
   alias MediaMagnet.VideoController
   use MediaMagnetWeb, :router
-
   import MediaMagnetWeb.UserAuth
 
   pipeline :browser do
@@ -28,6 +27,18 @@ defmodule MediaMagnetWeb.Router do
   # scope "/api", MediaMagnetWeb do
   #   pipe_through :api
   # end
+
+  scope "/chat", MediaMagnetWeb do
+    pipe_through :browser
+
+    get("/", PageController, :index)
+
+    post("/", PageController, :enter)
+
+    get("/room/:room_id", RoomController, :index)
+
+    get("/healthcheck", PageController, :healthcheck)
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:media_magnet, :dev_routes) do
@@ -67,8 +78,8 @@ defmodule MediaMagnetWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{MediaMagnetWeb.UserAuth, :ensure_authenticated}] do
-      # live "/users/settings", UserSettingsLive, :edit
-      # live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       live "/files", FileLive.Index, :index
       live "/files/new", FileLive.Index, :new
       live "/files/:id/edit", FileLive.Index, :edit
