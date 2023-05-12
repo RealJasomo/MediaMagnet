@@ -9,11 +9,12 @@ defmodule MediaMagnetWeb.FileLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _, socket) do
+  def handle_params(%{"id" => id}, url, socket) do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:file, Files.get_file!(id))}
+     |> assign(:file, Files.get_file!(id))
+     |> assign(:current_path, URI.parse(url).path)}
   end
 
   defp page_title(:show), do: "Show File"
