@@ -15,8 +15,14 @@
 </.list>
 <%= if @file.type == :video do %>
   <video controls>
-    <source src={"/video/#{@file.id}/stream"} />
+    <source src={"/stream/#{@file.id}"} />
   </video>
+<% end %>
+
+<%= if @file.type == :music do %>
+  <audio controls>
+    <source src={"/stream/#{@file.id}"} />
+  </audio>
 <% end %>
 
 <.back navigate={~p"/files"}>Back to files</.back>

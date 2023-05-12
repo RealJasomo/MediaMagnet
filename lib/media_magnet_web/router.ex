@@ -1,5 +1,5 @@
 defmodule MediaMagnetWeb.Router do
-  alias MediaMagnet.VideoController
+  alias MediaMagnet.FileStreamController
   use MediaMagnetWeb, :router
   import MediaMagnetWeb.UserAuth
 
@@ -94,7 +94,7 @@ defmodule MediaMagnetWeb.Router do
 
       live "/files/:id", FileLive.Show, :show
       live "/files/:id/show/edit", FileLive.Show, :edit
-      get "/video/:id/stream", VideoController, :stream_video_file
+      get "/stream/:id", FileStreamController, :stream_file
     end
   end
 

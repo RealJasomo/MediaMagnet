@@ -40,4 +40,11 @@ defmodule MediaMagnetWeb.UserLoginLive do
     form = to_form(%{"email" => email}, as: "user")
     {:ok, assign(socket, form: form), temporary_assigns: [form: form]}
   end
+
+  @impl true
+  def handle_params(_params, url, socket) do
+    {:noreply,
+     socket
+     |> assign(:current_path, URI.parse(url).path)}
+  end
 end
