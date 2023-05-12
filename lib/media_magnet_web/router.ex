@@ -13,6 +13,15 @@ defmodule MediaMagnetWeb.Router do
     plug :fetch_current_user
   end
 
+  pipeline :video_chat do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, {MediaMagnetWeb.Layouts, :root}
+    plug :put_secure_browser_headers
+    plug :fetch_current_user
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -23,22 +32,21 @@ defmodule MediaMagnetWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/chat", MediaMagnetWeb do
+    pipe_through :video_chat
+    get "/", PageController, :index
+
+    post "/", PageController, :enter
+
+    get "/room/:room_id", RoomController, :index
+
+    get "/healthcheck", PageController, :healthcheck
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MediaMagnetWeb do
   #   pipe_through :api
   # end
-
-  scope "/chat", MediaMagnetWeb do
-    pipe_through :browser
-
-    get("/", PageController, :index)
-
-    post("/", PageController, :enter)
-
-    get("/room/:room_id", RoomController, :index)
-
-    get("/healthcheck", PageController, :healthcheck)
-  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:media_magnet, :dev_routes) do

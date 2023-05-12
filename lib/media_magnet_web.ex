@@ -21,7 +21,7 @@ defmodule MediaMagnetWeb do
 
   def router do
     quote do
-      use Phoenix.Router, helpers: false
+      use Phoenix.Router, helpers: true
 
       # Import common connection and controller functions to use in pipelines
       import Plug.Conn
@@ -44,6 +44,7 @@ defmodule MediaMagnetWeb do
 
       import Plug.Conn
       import MediaMagnetWeb.Gettext
+      alias MediaMagnetWeb.Router.Helpers, as: Routes
 
       unquote(verified_routes())
     end

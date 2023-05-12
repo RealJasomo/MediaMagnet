@@ -25,9 +25,9 @@ defmodule MediaMagnet.Room do
     # When running via docker without using host network we
     # have to listen at 0.0.0.0 but our packets still need
     # valid IP address in their headers. We store it under `mock_ip`.
-    mock_ip = Application.fetch_env!(:membrane_videoroom_demo, :external_ip)
+    mock_ip = Application.fetch_env!(:media_magnet, :external_ip)
     external_ip = if @mix_env == :prod, do: {0, 0, 0, 0}, else: mock_ip
-    port_range = Application.fetch_env!(:membrane_videoroom_demo, :port_range)
+    port_range = Application.fetch_env!(:media_magnet, :port_range)
 
     rtc_engine_options = [
       id: room_id
@@ -41,8 +41,8 @@ defmodule MediaMagnet.Room do
 
     network_options = [
       integrated_turn_options: integrated_turn_options,
-      dtls_pkey: Application.get_env(:membrane_videoroom_demo, :dtls_pkey),
-      dtls_cert: Application.get_env(:membrane_videoroom_demo, :dtls_cert)
+      dtls_pkey: Application.get_env(:media_magnet, :dtls_pkey),
+      dtls_cert: Application.get_env(:media_magnet, :dtls_cert)
     ]
 
     {:ok, pid} = Membrane.RTC.Engine.start(rtc_engine_options, [])
