@@ -1,6 +1,7 @@
 defmodule MediaMagnetWeb.FileLive.FormComponent do
   use MediaMagnetWeb, :live_component
 
+  alias Mix.Tasks.Phx.Routes
   alias MediaMagnet.Files
 
   @impl true
@@ -20,7 +21,6 @@ defmodule MediaMagnetWeb.FileLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:path]} type="text" label="Path" />
         <.input
           field={@form[:type]}
           type="select"
@@ -28,6 +28,7 @@ defmodule MediaMagnetWeb.FileLive.FormComponent do
           prompt="Choose a value"
           options={Ecto.Enum.values(MediaMagnet.Files.File, :type)}
         />
+        <.live_file_input upload={@uploads.data_file} />
         <:actions>
           <.button phx-disable-with="Saving...">Save File</.button>
         </:actions>
@@ -43,7 +44,9 @@ defmodule MediaMagnetWeb.FileLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_form(changeset)}
+     |> assign_form(changeset)
+     |> assign(:uploaded_files, [])
+     |> allow_upload(:data_file, accept: :any, max_entries: 1, max_file_size: 1_000_000_000_000)}
   end
 
   @impl true
@@ -56,8 +59,30 @@ defmodule MediaMagnetWeb.FileLive.FormComponent do
     {:noreply, assign_form(socket, changeset)}
   end
 
+  def ext(entry) do
+    [ext | _] = MIME.extensions(entry.client_type)
+    ext
+  end
+
+  @impl true
   def handle_event("save", %{"file" => file_params}, socket) do
-    save_file(socket, socket.assigns.action, file_params)
+    file_paths =
+      consume_uploaded_entries(socket, :data_file, fn %{path: path}, entry ->
+        dest =
+          Path.join([
+            System.cwd!(),
+            "data",
+            "uploads",
+            "#{entry.uuid}.#{ext(entry)}"
+          ])
+
+        File.cp!(path, dest)
+        {:ok, static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")}
+      end)
+
+    file_path = List.first(file_paths)
+    new_params = Map.put(file_params, "path", file_path)
+    save_file(socket, socket.assigns.action, new_params)
   end
 
   defp save_file(socket, :edit, file_params) do
