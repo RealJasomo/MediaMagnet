@@ -10,5 +10,19 @@ defmodule MediaMagnet.Pipeline do
       demuxer: Membrane.MPEG.TS.Demuxer,
       audio_parser: %Membrane.AAC.Parser{out_encapsulation: :none}
     ]
+
+    links = [
+      link(:file_source)
+      |> to(:demuxer),
+      link(:demuxer)
+      |> to(:audio_parser)
+    ]
+
+    spec = %ParentSpec{
+      children: children,
+      links: links
+    }
+
+    {{:ok, spec: spec}, %{}}
   end
 end

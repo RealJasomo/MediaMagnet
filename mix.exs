@@ -55,15 +55,14 @@ defmodule MediaMagnet.MixProject do
       {:plug_cowboy, "~> 2.5"},
       # core services of membrane
       {:membrane_rtc_engine, "~> 0.7.0"},
-      {:membrane_webrtc_plugin, "~> 0.9.0"}
-      # {:membrane_core, "~> 0.11.0"},
-      # {:membrane_mp4_plugin, "> 0.0.0"},
-      # {:membrane_http_adaptive_stream_plugin, "> 0.0.0"},
-      # {:membrane_file_plugin, "~> 0.13.0"},
-      # {:membrane_h264_ffmpeg_plugin, "~> 0.25.4"},
-      # {:membrane_aac_plugin, "~> 0.13.0"},
-      # {:membrane_rtc_engine, "~> 0.11.0"}
-      # {:membrane_webrtc_plugin, "~> 0.14.0"}
+      {:membrane_webrtc_plugin, "~> 0.9.0"},
+      {:membrane_core, "~> 0.10.0"},
+      {:membrane_mp4_plugin, "> 0.0.0"},
+      {:membrane_http_adaptive_stream_plugin, "> 0.0.0"},
+      {:membrane_file_plugin, "~> 0.12.0"},
+      {:membrane_h264_ffmpeg_plugin, "~> 0.21.5"},
+      {:membrane_aac_plugin, "~> 0.12.0"},
+      {:membrane_tee_plugin, "> 0.0.0"}
     ]
   end
 
