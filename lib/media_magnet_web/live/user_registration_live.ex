@@ -84,4 +84,11 @@ defmodule MediaMagnetWeb.UserRegistrationLive do
       assign(socket, form: form)
     end
   end
+
+  @impl true
+  def handle_params(_params, url, socket) do
+    {:noreply,
+     socket
+     |> assign(:current_path, URI.parse(url).path)}
+  end
 end

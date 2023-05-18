@@ -552,8 +552,12 @@ defmodule MediaMagnetWeb.CoreComponents do
             <i class="fa-solid fa-video mr-5"></i> Video
           </li>
         </.link>
-        <li><i class="fa-solid fa-music mr-5"></i> Music</li>
-        <li><i class="fa-solid fa-file mr-5"></i> Documents</li>
+        <li class={if String.contains?(@current_path, "/music"), do: "text-cyan-400"}>
+          <i class="fa-solid fa-music mr-5"></i> Music
+        </li>
+        <li class={if String.contains?(@current_path, "/documents"), do: "text-cyan-400"}>
+          <i class="fa-solid fa-file mr-5"></i> Documents
+        </li>
       </ul>
     </div>
     """
