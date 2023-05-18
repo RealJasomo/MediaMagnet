@@ -8,7 +8,8 @@ defmodule MediaMagnetWeb.PageController do
   end
 
   def index(conn, params) do
-    render(conn, "index.html", room_id: Map.get(params, "room_id"))
+    current_path = conn.request_path
+    render(conn, "index.html", room_id: Map.get(params, "room_id"), current_path: current_path)
   end
 
   def enter(conn, %{"room_name" => room_name, "display_name" => display_name}) do
