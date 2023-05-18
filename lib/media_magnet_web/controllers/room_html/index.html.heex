@@ -5,11 +5,16 @@
       <div class="flex items-center">
         <img src="/images/logo.png" class="hidden md:block h-8 mr-2" />
         <h2 class="text-2xl md:text-4xl text-center font-bold text-black">
-          Membrane WebRTC video room demo
+          Watch Together
         </h2>
       </div>
       <h3 class="text-2xl font-semibold text-black mb-2">Room: <%= @room_id %></h3>
       <div id="participants-list" class="text-xl font-medium text-black"></div>
+      <div>
+        <video controls>
+          <source src="/stream/23" />
+        </video>
+      </div>
     </header>
     <div id="videochat-error" class="VideoChatError" style="display: none;"></div>
     <div id="videochat" class="px-2 md:px-20 overflow-y-auto">
