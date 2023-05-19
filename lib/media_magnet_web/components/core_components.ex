@@ -549,15 +549,14 @@ defmodule MediaMagnetWeb.CoreComponents do
       <ul class="text-white font-semibold my-5 space-y-5">
         <.link navigate="/files">
           <li class={if String.contains?(@current_path, "/files"), do: "text-cyan-400"}>
-            <i class="fa-solid fa-video mr-5"></i> Video
+            <i class="fa-solid fa-file mr-5"></i> Files
           </li>
         </.link>
-        <li class={if String.contains?(@current_path, "/music"), do: "text-cyan-400"}>
-          <i class="fa-solid fa-music mr-5"></i> Music
-        </li>
-        <li class={if String.contains?(@current_path, "/documents"), do: "text-cyan-400"}>
-          <i class="fa-solid fa-file mr-5"></i> Documents
-        </li>
+        <.link navigate="/together">
+          <li class={if String.contains?(@current_path, "/together"), do: "text-cyan-400"}>
+            <i class="fa-solid fa-people-arrows mr-5"></i> Together
+          </li>
+        </.link>
       </ul>
     </div>
     """

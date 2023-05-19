@@ -32,7 +32,7 @@ defmodule MediaMagnetWeb.Router do
     get "/", PageController, :home
   end
 
-  scope "/chat", MediaMagnetWeb do
+  scope "/together", MediaMagnetWeb do
     pipe_through :video_chat
     get "/", PageController, :index
 
