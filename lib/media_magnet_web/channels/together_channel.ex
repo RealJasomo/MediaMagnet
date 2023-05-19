@@ -2,31 +2,25 @@ defmodule MediaMagnetWeb.TogetherChannel do
   use MediaMagnetWeb, :channel
 
   @impl true
-  def join("together:lobby", payload, socket) do
-    if authorized?(payload) do
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+  def join("together:" <> room_id, _payload, socket) do
+    {:ok, socket |> assign(:room_id, room_id) |> assign(:current_video, nil)}
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
   @impl true
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
-  end
-
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (together:lobby).
-  @impl true
-  def handle_in("shout", payload, socket) do
-    broadcast(socket, "shout", payload)
+  def handle_in("play", _payload, socket) do
+    broadcast(socket, "play", %{})
     {:noreply, socket}
   end
 
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
+  @impl true
+  def handle_in("pause", _payload, socket) do
+    broadcast(socket, "pause", %{})
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_in("switch", %{"new_video" => new_video}, socket) do
+    broadcast(socket, "switch", %{"new_video" => new_video})
+    {:noreply, socket |> assign(:current_video, new_video)}
   end
 end

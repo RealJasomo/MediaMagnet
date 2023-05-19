@@ -77,7 +77,29 @@ defmodule MediaMagnetWeb.FileLive.FormComponent do
           ])
 
         File.cp!(path, dest)
-        {:ok, static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")}
+
+        # ffmpeg -i filename.mp4 -codec: copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls filename.m3u8
+        if file_params["type"] == "video" do
+          System.cmd("ffmpeg", [
+            "-i",
+            dest,
+            "-codec:",
+            "copy",
+            "-start_number",
+            "0",
+            "-hls_time",
+            "10",
+            "-hls_list_size",
+            "0",
+            "-f",
+            "hls",
+            "#{dest}.m3u8"
+          ])
+
+          {:ok, static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}.m3u8")}
+        else
+          {:ok, static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")}
+        end
       end)
 
     file_path = List.first(file_paths)

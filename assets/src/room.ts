@@ -116,7 +116,47 @@ export class Room {
 
 		addVideoElement(LOCAL_PEER_ID, 'Me', true);
 		attachStream(this.localStream!, LOCAL_PEER_ID);
+		
+		const videoChannel = this.socket.channel(`together:${getRoomId()}`);
+		videoChannel.join();
 
+		document.querySelectorAll('#files>tr').forEach(tr => tr.addEventListener('click', event => {
+			const new_video = tr.id;
+			videoChannel.push("switch", {new_video});
+			
+		}));
+
+
+		let video_ele = document.getElementById("video-element");
+			if(video_ele) {
+				video_ele.addEventListener("play", () => {
+					videoChannel.push("play", {})
+				})
+				video_ele.addEventListener("pause", () => {
+					videoChannel.push("pause", {})	
+				});
+
+				videoChannel.on("play", () => {
+					const ele = document.getElementById("video-element")
+					if (ele) {
+						(ele as HTMLVideoElement).play()
+					}
+				});
+				videoChannel.on("pause", () => {
+					const ele = document.getElementById("video-element")
+					if (ele) {
+						(ele as HTMLVideoElement).pause()
+					}
+				});
+		}
+
+		let src_elem = document.querySelector("#video-element>source");
+		if(src_elem) {
+			videoChannel.on("switch", ({new_video}) => {
+				(src_elem as HTMLSourceElement).src = `/stream/${new_video}`;
+				video_ele!.load();
+			});
+		}
 		await this.phoenixChannelPushResult(this.webrtcChannel.join());
 	};
 
