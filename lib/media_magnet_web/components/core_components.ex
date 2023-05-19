@@ -549,7 +549,7 @@ defmodule MediaMagnetWeb.CoreComponents do
       <ul class="text-white font-semibold my-5 space-y-5">
         <.link navigate="/files">
           <li class={if String.contains?(@current_path, "/files"), do: "text-cyan-400"}>
-            <i class="fa-solid fa-file mr-5"></i> Files
+            <i class="fa-solid fa-file mr-5 py-5"></i> Files
           </li>
         </.link>
         <.link navigate="/together">
